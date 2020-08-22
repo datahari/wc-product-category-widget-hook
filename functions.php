@@ -28,6 +28,19 @@ function dh_top_category_of_current() {
 }
 
 function dh_product_categories_widget_show_only_children_of_top_category( $args ) {
+    // make sure all categories are listed first
+    if( $args['include'] == "" ) {
+        $cats = get_categories( array(
+            "taxonomy"   => "product_cat",
+            "hide_empty" => 0
+        ) );
+        $p = "";
+        foreach( $cats as $cat ) {
+            $args['include'] .= $p.$cat->term_id;
+            $p = ",";
+        }
+    }
+
     $top_category = dh_top_category_of_current();
 
     $categories = explode( ',', $args['include'] );
@@ -48,6 +61,13 @@ function dh_product_categories_widget_show_only_children_of_top_category( $args 
     }
 
     $args['include'] = implode( ',', $include );
+
+    // if result is empty, add top category,
+    // otherwise all categories will be listed
+    if( $args['include'] == "" ) {
+        $args['include'] = $top_category;
+        $args['hide_empty'] = 1;
+    }
 
     return $args;
 }
