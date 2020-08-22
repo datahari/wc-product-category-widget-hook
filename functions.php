@@ -62,10 +62,10 @@ function dh_product_categories_widget_show_only_children_of_top_category( $args 
 
     $args['include'] = implode( ',', $include );
 
-    // if result is empty, add top category,
+    // if result is empty, add incorrect category id
     // otherwise all categories will be listed
     if( $args['include'] == "" ) {
-        $args['include'] = $top_category;
+        $args['include'] = "-1";
         $args['hide_empty'] = 1;
     }
 
